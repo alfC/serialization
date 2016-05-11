@@ -43,7 +43,7 @@ struct nvp :
 public:
     explicit nvp(const char * name_, T & t) :
         // note: added _ to suppress useless gcc warning
-        std::pair<const char *, T *>(name_, & t)
+        std::pair<const char *, T *>(name_, std::addressof(t) )
     {}
 
     const char * name() const {
