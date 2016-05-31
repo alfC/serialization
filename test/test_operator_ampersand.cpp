@@ -28,10 +28,9 @@ int main(){
 	}
 	A a2;
 	{
-		boost::archive::xml_iarchive ia(s);
-		ia >> BOOST_SERIALIZATION_NVP(a2);
+	    boost::archive::xml_iarchive ia(s);
+	    ia >> BOOST_SERIALIZATION_NVP(a2);
 	}
 	assert( a.val == a2.val );
 	return 0;
 }
-
