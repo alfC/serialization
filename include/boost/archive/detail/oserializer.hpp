@@ -371,7 +371,13 @@ struct save_pointer_type {
                     pointer_oserializer<Archive, T>
                 >::get_const_instance();
             // save the requested pointer type
-            ar.save_pointer(& t, & bpos);
+            ar.save_pointer(
+            #if DONT_USE_ADDRESSOF
+            & t,
+            #else
+            boost::addressof(t), 
+            #endif
+            & bpos);
         }
     };
 
