@@ -90,6 +90,11 @@ namespace std{
 #include <boost/archive/detail/archive_serializer_map.hpp>
 #include <boost/archive/detail/check.hpp>
 
+#if ! DONT_USE_ADDRESSOF
+#include <boost/core/addressof.hpp>
+#endif
+
+
 namespace boost {
 
 namespace serialization {
@@ -406,7 +411,11 @@ struct load_non_pointer_type {
     struct load_standard {
         template<class T>
         static void invoke(Archive &ar, const T & t){
+            #if DONT_USE_ADDRESSOF
             void * x = & const_cast<T &>(t);
+            #else
+            void * x = boost::addressof(const_cast<T &>(t));
+            #endif
             ar.load_object(
                 x, 
                 boost::serialization::singleton<
