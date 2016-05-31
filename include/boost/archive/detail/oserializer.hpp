@@ -67,6 +67,10 @@
 #include <boost/archive/detail/archive_serializer_map.hpp>
 #include <boost/archive/detail/check.hpp>
 
+#if ! DONT_USE_ADDRESSOF
+#include <boost/core/addressof.hpp>
+#endif
+
 namespace boost {
 
 namespace serialization {
@@ -252,7 +256,11 @@ struct save_non_pointer_type {
         template<class T>
         static void invoke(Archive &ar, const T & t){
             ar.save_object(
+                #if DONT_USE_ADDRESSOF
                 & t, 
+                #else
+                boost::addressof(t),
+                #endif
                 boost::serialization::singleton<
                     oserializer<Archive, T>
                 >::get_const_instance()
